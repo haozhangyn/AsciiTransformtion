@@ -1,31 +1,62 @@
 package cn.edu.ynu.hao;
 
+import java.util.ArrayList;
+
 public class AsciiTransformtion {
 	
 	public String numToChars(String str ){
-		if(str.length()%2!=0)str="0"+str;
-		char[] strArr=str.toCharArray();
-		String res="";
-		for(int i=0; i<strArr.length;i=i+2){
-			if((int)(strArr[i]-'0')*10+(strArr[i+1]-'0')>93||(int)(strArr[i]-'0')*10+(strArr[i+1]-'0')<0){
-				throw new IndexOutOfBoundsException();
+		 char[] chars = str.toCharArray();
+	        ArrayList<Integer> numList = new ArrayList<>();
+	        for (int i = 0; i< chars.length; i++){
+	            numList.add((int)chars[i]-'0');
+	        }
 
-			}
-			res+=(char)((strArr[i]-'0')*10+(strArr[i+1]-'0')+33);
-		}
-		return res;
+	        int num = 0;
+	        ArrayList<Integer> quotientList = new ArrayList<>();
+	        int quotient = 0;
+	        int remainder = 0;
+	        ArrayList<Integer> resultList = new ArrayList<>();
+	        while(numList.size()>2){
+	            for( int i = 0; i < numList.size(); i ++){
+	                num = num * 10 + numList.get(i);
+	                quotient = num / 94;
+	                if(quotient > 0){
+	                    quotientList.add(quotient);
+	                    remainder = num % 94;
+	                    num = remainder;
+	                }
+	            }
+	            resultList.add(remainder);
+	            numList = (ArrayList<Integer>)quotientList.clone();
+	            quotientList.clear();
+	            num = 0;
+	        }
+	        if(numList.size() == 2){
+	            num = numList.get(0) * 10 + numList.get(1);
+	            if( num > 93) {
+	                resultList.add(numList.get(1) - 4);
+	                resultList.add(1);
+	            }else
+	                resultList.add(num);
+	        }else
+	            resultList.add(numList.get(0));
+	        Integer[] revResult = resultList.toArray(new Integer[resultList.size()]);
+	        StringBuffer result = new StringBuffer();
+	        int length = revResult.length;
+
+	        for( int i = length - 1; i > -1; i --){
+	            result.append((char)(revResult[i]+33));
+	        }
+	        return result.toString();
 	}
 	
 	public String charsToNum(String str){
-		char[] strArr=str.toCharArray();
-		String res="";
-		for(int i=0;i<strArr.length;i++){
-			if((int)(strArr[i]-33)<0||(int)(strArr[i]-33)>93){
-				throw new IndexOutOfBoundsException();
-			}
-			res+=(int)(strArr[i]-33);
+		long res=0;
+		char[] strArray=str.toCharArray();
+		for(int i=0;i<strArray.length;i++){
+			res=res*94+((int)strArray[i]-33);
 		}
-		return res;
+		return res+"";
 	}
 	
 	public void asciiTransformtion(String str,int type){
