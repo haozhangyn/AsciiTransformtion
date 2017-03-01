@@ -50,6 +50,21 @@ public class AsciiTransformtion {
 	        return result.toString();
 	}
 	
+	public String intToChars(String str ){
+		long strnum=Long.parseLong(str);
+		 StringBuffer res = new StringBuffer();
+		
+		while(strnum/94>0){
+			res.append((char)(strnum%94+33));
+			strnum=strnum/94;
+		}
+		res.append((char)(strnum%94+33));
+		
+	      
+	        return res.reverse().toString();
+	}
+	
+	
 	public String charsToNum(String str){
 		long res=0;
 		char[] strArray=str.toCharArray();
@@ -61,7 +76,7 @@ public class AsciiTransformtion {
 	
 	public void asciiTransformtion(String str,int type){
 		if(type==0){
-			System.out.println(numToChars(str));
+			System.out.println(intToChars(str));
 		}else if(type==1){
 			System.out.println(charsToNum(str));
 
