@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class AsciiTransformtion {
 	
 	public String numToChars(String str ){
-		 char[] chars = str.toCharArray();
+		  char[] chars = str.toCharArray();
 	        ArrayList<Integer> numList = new ArrayList<>();
 	        for (int i = 0; i< chars.length; i++){
 	            numList.add((int)chars[i]-'0');
@@ -17,14 +17,18 @@ public class AsciiTransformtion {
 	        int remainder = 0;
 	        ArrayList<Integer> resultList = new ArrayList<>();
 	        while(numList.size()>2){
-	            for( int i = 0; i < numList.size(); i ++){
-	                num = num * 10 + numList.get(i);
+	            int index = 0;
+	            while(num < 94 && index < numList.size()){
+	                num = num * 10 + numList.get(index++);
+	            }
+	            while(true){
 	                quotient = num / 94;
-	                if(quotient > 0){
-	                    quotientList.add(quotient);
-	                    remainder = num % 94;
-	                    num = remainder;
-	                }
+	                quotientList.add(quotient);
+	                remainder = num % 94;
+	                num = remainder;
+	                if(index == numList.size())
+	                    break;
+	                num = num * 10 + numList.get(index++);
 	            }
 	            resultList.add(remainder);
 	            numList = (ArrayList<Integer>)quotientList.clone();
@@ -34,7 +38,7 @@ public class AsciiTransformtion {
 	        if(numList.size() == 2){
 	            num = numList.get(0) * 10 + numList.get(1);
 	            if( num > 93) {
-	                resultList.add(numList.get(1) - 4);
+	                resultList.add(num - 94);
 	                resultList.add(1);
 	            }else
 	                resultList.add(num);
@@ -76,7 +80,7 @@ public class AsciiTransformtion {
 	
 	public void asciiTransformtion(String str,int type){
 		if(type==0){
-			System.out.println(intToChars(str));
+			System.out.println(numToChars(str));
 		}else if(type==1){
 			System.out.println(charsToNum(str));
 
